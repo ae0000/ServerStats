@@ -52,18 +52,18 @@ swap(){
 	RESULT+=$resultKey$SEPARATOR$resultValue$END
 }
 
-postResults(){
-	wget -S --output-file=/tmp/wgetOutput.txt $SERVER$USER_NAME/$KEY/$RESULT
-	count="$(grep -c '200 OK' /tmp/wgetOutput.txt)"
-	
-	if [ $count -eq 0 ]; then
-		echo 'Failed to post results'
-	elif [ $count -eq 1 ]; then
-		echo 'Success'
+# Push the results to the server
+sendResults(){
+	# Uses wget which is nice and fast to send the results to the server
+	# We are checking for a "200 OK" from the server headers (wget -S)
+	# TODO its currently saving the downloaded file... which is not what we want
+	# Added the -N option so that the same file gets overwritten at least
+	if  ! wget -SN $SERVER$USER_NAME/$KEY/$RESULT 2>&1 | grep -q "200 OK"; then
+		echo 'its a disaster'
 	else
-		echo 'Failed to post results... something strange happened'
+		echo 'SUCCESS'
+		
 	fi
-	
 }
 
 # List of functions to run
@@ -76,6 +76,6 @@ swap
 if [ $TEST -eq 1 ]; then
 	echo "RESULT: $RESULT"
 else
-	# Lets post the results
-	postResults
+	# Lets send the results
+	sendResults
 fi
