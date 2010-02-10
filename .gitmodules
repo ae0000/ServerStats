@@ -1,0 +1,9 @@
+[submodule "src/www/system"]
+	path = src/www/system
+	url = git://github.com/kohana/core.git
+[submodule "src/www/modules/database"]
+	path = src/www/modules/database
+	url = git://github.com/kohana/database.git
+[submodule "src/www/modules/pagination"]
+	path = src/www/modules/pagination
+	url = git://github.com/kohana/pagination.git
